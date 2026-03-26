@@ -1,0 +1,276 @@
+/* FactCheck AI — content script styles */
+
+#factcheck-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483644;
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#factcheck-selection {
+  position: absolute;
+  border: 2px solid #8b6fff;
+  background: rgba(139, 111, 255, 0.08);
+  box-shadow:
+    0 0 0 9999px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(139, 111, 255, 0.3) inset;
+  pointer-events: none;
+  display: none;
+}
+
+#factcheck-size-label {
+  position: absolute;
+  background: rgba(15, 15, 16, 0.8);
+  color: #666;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  pointer-events: none;
+  display: none;
+  z-index: 2147483647;
+}
+
+#factcheck-hint {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 15, 16, 0.92);
+  color: #e8e6e0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(139, 111, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 2147483647;
+  pointer-events: none;
+  white-space: nowrap;
+  letter-spacing: -0.1px;
+  display: none;
+}
+
+#factcheck-hint span {
+  color: #8b6fff;
+  font-weight: 600;
+}
+
+/* FIXED position so buttons always appear in viewport regardless of scroll */
+#factcheck-confirm-btn {
+  position: fixed;
+  background: #5b4fcf;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer;
+  display: none;
+  opacity: 0;
+  z-index: 2147483647;
+  transition: background 0.1s, opacity 0.15s;
+  white-space: nowrap;
+  letter-spacing: -0.1px;
+  box-shadow: 0 4px 16px rgba(91, 79, 207, 0.5);
+  min-width: 140px;
+}
+
+#factcheck-confirm-btn:hover {
+  background: #6b5fe0;
+}
+
+#factcheck-cancel-btn {
+  position: fixed;
+  background: rgba(30, 30, 32, 0.95);
+  color: #888;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer;
+  display: none;
+  opacity: 0;
+  z-index: 2147483647;
+  transition: color 0.1s, opacity 0.15s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+  min-width: 72px;
+}
+
+#factcheck-cancel-btn:hover {
+  color: #e8e6e0;
+}
+
+/* Loading overlay */
+#factcheck-loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483645;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+#factcheck-loading-overlay.visible {
+  display: flex;
+}
+
+#factcheck-loading-card {
+  background: #0f0f10;
+  border: 1px solid #2a2a2e;
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 220px;
+}
+
+#factcheck-loading-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2.5px solid #2a2a2e;
+  border-top-color: #8b6fff;
+  border-radius: 50%;
+  animation: factcheck-spin 0.8s linear infinite;
+}
+
+@keyframes factcheck-spin {
+  to { transform: rotate(360deg); }
+}
+
+#factcheck-loading-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+}
+
+/* Result toast */
+#factcheck-result-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 2147483647;
+  width: 320px;
+  background: #0f0f10;
+  border: 1px solid #2a2a2e;
+  border-radius: 14px;
+  overflow: hidden;
+  display: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: factcheck-slide-in 0.25s ease;
+}
+
+#factcheck-result-toast.visible {
+  display: block;
+}
+
+@keyframes factcheck-slide-in {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.factcheck-toast-header {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.factcheck-toast-header.true        { background: #0d2b17; }
+.factcheck-toast-header.false       { background: #2b0d0d; }
+.factcheck-toast-header.misleading  { background: #2b200d; }
+.factcheck-toast-header.unverifiable{ background: #1a1a1c; }
+
+.factcheck-verdict-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.factcheck-toast-header.true        .factcheck-verdict-pill { background: #1a5c2b; color: #5cb870; }
+.factcheck-toast-header.false       .factcheck-verdict-pill { background: #5c1a1a; color: #e05555; }
+.factcheck-toast-header.misleading  .factcheck-verdict-pill { background: #5c3d1a; color: #f0a050; }
+.factcheck-toast-header.unverifiable .factcheck-verdict-pill { background: #2a2a2e; color: #888; }
+
+.factcheck-toast-summary {
+  font-size: 12px;
+  color: #bbb;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.factcheck-toast-close {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.factcheck-toast-close:hover { color: #888; }
+
+.factcheck-toast-body {
+  padding: 12px 14px;
+  border-top: 1px solid #1a1a1c;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.factcheck-toast-body::-webkit-scrollbar { width: 3px; }
+.factcheck-toast-body::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+.factcheck-claim {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #1a1a1c;
+}
+.factcheck-claim:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.factcheck-claim-text {
+  font-size: 11px;
+  color: #888;
+  font-style: italic;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.factcheck-claim-verdict {
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.factcheck-claim-verdict.true        { color: #5cb870; }
+.factcheck-claim-verdict.false       { color: #e05555; }
+.factcheck-claim-verdict.misleading  { color: #f0a050; }
+.factcheck-claim-verdict.unverifiable{ color: #666; }
+
+.factcheck-claim-explanation {
+  font-size: 11px;
+  color: #666;
+  line-height: 1.5;
+}
