@@ -1,55 +1,56 @@
-# FactCheck AI — Chrome Extension
+# FactCheck AI — Chrome кеңейтімі
 
-Fact-check anything on the web by selecting an area with your mouse. Powered by Claude AI (vision + reasoning).
+Вебтегі кез келген ақпаратты тінтуірмен белгілеу арқылы тексеріңіз. Claude AI (көру + логика) арқылы жұмыс істейді.
 
-## Installation
+## Орнату
 
-1. Open Chrome and go to `chrome://extensions/`
-2. Enable **Developer Mode** (toggle in top-right)
-3. Click **Load unpacked**
-4. Select this folder (`factcheck-extension/`)
-5. The extension icon will appear in your toolbar
+1. Chrome браузерін ашып, `chrome://extensions/` бетіне өтіңіз
+2. **Developer Mode** режимін қосыңыз (жоғарғы оң жақтағы қосқыш)
+3. **Load unpacked** батырмасын басыңыз
+4. Осы буманы таңдаңыз (`factcheck-extension/`)
+5. Кеңейтім белгішесі құралдар панелінде пайда болады
 
-## Setup
+## Баптау
 
-1. Click the extension icon
-2. Click the ⚙ settings gear
-3. Paste your Anthropic API key (`sk-ant-...`)
-   - Get one at https://console.anthropic.com
-4. Click **Save API Key**
+1. Кеңейтім белгішесін басыңыз
+2. ⚙ баптаулар белгішесін басыңыз
+3. Anthropic API кілтіңізді енгізіңіз (`sk-ant-...`)
 
-## Usage
+   * Кілтті мына жерден ала аласыз: https://console.anthropic.com
+4. **Save API Key** батырмасын басыңыз
 
-1. Click the extension icon on any webpage
-2. Click **Select Area to Fact-Check**
-3. The popup will close — draw a box around any text/content on the page
-4. Click **✓ Fact-Check This** (or press Enter)
-5. Results appear as a panel in the top-right corner of the page
+## Қолдану
 
-## How it works
+1. Кез келген веб-бетте кеңейтім белгішесін басыңыз
+2. **Select Area to Fact-Check** батырмасын басыңыз
+3. Popup жабылады — беттен кез келген мәтінді немесе контентті белгілеңіз
+4. **✓ Fact-Check This** батырмасын басыңыз (немесе Enter пернесін басыңыз)
+5. Нәтижелер беттің жоғарғы оң жақ бұрышында панель ретінде көрсетіледі
+
+## Қалай жұмыс істейді
 
 ```
-Click extension
-    → popup.js injects activateSelector into the page
-    → content.js draws the selection overlay
-    → User draws a box and confirms
-    → content.js sends coordinates to background.js
-    → background.js captures the tab screenshot (captureVisibleTab)
-    → Crops the image to the selected area (OffscreenCanvas)
-    → Sends cropped image to Claude API (vision)
-    → Claude identifies claims and fact-checks them
-    → Result toast appears on the page
+Кеңейтімді басу
+    → popup.js бетке activateSelector енгізеді
+    → content.js таңдау қабатын сызады
+    → Пайдаланушы аймақты таңдап, растайды
+    → content.js координаттарды background.js-ке жібереді
+    → background.js captureVisibleTab арқылы скриншот жасайды
+    → Таңдалған аймаққа дейін кеседі (OffscreenCanvas)
+    → Кесілген суретті Claude API-ға жібереді (көру)
+    → Claude мәлімдемелерді анықтап, тексереді
+    → Нәтиже бетте хабарлама ретінде көрсетіледі
 ```
 
-## Files
+## Файлдар
 
 ```
 factcheck-extension/
-├── manifest.json       Chrome Extension MV3 config
-├── popup.html          Extension popup UI
-├── popup.js            Popup logic, history, settings
-├── content.js          Area selector + result toast
-├── content.css         Overlay and toast styles
+├── manifest.json       Chrome Extension MV3 конфигурациясы
+├── popup.html          Кеңейтімнің popup интерфейсі
+├── popup.js            Popup логикасы, тарих, баптаулар
+├── content.js          Аймақ таңдау + нәтиже көрсету
+├── content.css         Қабат және хабарлама стильдері
 ├── background.js       Service worker: capture + Claude API
 └── icons/
     ├── icon16.png
@@ -57,9 +58,10 @@ factcheck-extension/
     └── icon128.png
 ```
 
-## Troubleshooting
+## Ақауларды шешу
 
-- **"Cannot run on this page"** — Chrome restricts extensions on `chrome://` URLs and the Chrome Web Store
-- **"Invalid API key"** — Make sure your key starts with `sk-ant-` and has credits
-- **"Rate limit reached"** — Wait 30 seconds and try again
-- PDF pages may not support the content script; try HTML pages instead
+* **"Cannot run on this page"** — Chrome `chrome://` URL-дарында және Chrome Web Store-та кеңейтімдерді шектейді
+* **"Invalid API key"** — Кілтіңіз `sk-ant-` арқылы басталатынын және балансы бар екенін тексеріңіз
+* **"Rate limit reached"** — 30 секунд күтіп, қайтадан көріңіз
+* PDF беттері content script-ті қолдамауы мүмкін; HTML беттерін қолданып көріңіз
+
